@@ -1,9 +1,10 @@
 const express = require ('express');
-const RegistroUsuario = require ('/Users/davidbritoledesma/Desktop/Cuarta entrega/controllers/controller.js');
+const userControllers = require ('/Users/davidbritoledesma/Desktop/Cuarta entrega/controllers/controller.js');
 
 const router = express.Router();
 
-router.post("/usuario", RegistroUsuario.userController);
+router.post('/usuario', userControllers.addUsuario);
+router.post('/reservas' ,userControllers.addReserva);
 
 module.exports = router ;
 

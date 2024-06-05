@@ -1,13 +1,12 @@
-class Id {
-    constructor (identificador,nombre, email) {
+class Usuario {
+    constructor (identificador,nombre,phone, email) {
         this.identificador = identificador;
         this.nombre = nombre;
+        this.phone = phone; 
         this.email = email;
     }
 
-    getId () {
-        return `Id Reserva : ${this.identificador} , Nombre : ${this.nombre}, Email : ${this.email}`;
-    }
+    
 
     }; 
 
@@ -17,9 +16,7 @@ class Hotel {
         this.habitaciones = habitaciones; 
         
     
-    }
-    getHotel () {
-        return `Hotel : ${this.nameHotel} , Habitaciones : ${this.habitaciones}`;
+    
     }
 };
 
@@ -33,9 +30,7 @@ class Reserva {
         
     }
 
-     getReserva() {
-         return `Datos de tu Reserva : Check-in: ${this.inicio} ,Check-out: ${this.fin} ,Numero de Huespedes: ${this.huespedesNum}, Tipo de Habitación : ${this.tipoHabitacion}` 
-     }
+   
     };
 
     class Estado {
@@ -43,21 +38,9 @@ class Reserva {
             this.confirmado = confirmado; 
             this.pendiente = pendiente;
             this.rechazado = rechazado ;
-    }
 
-    getStatus () {
-        if  (confirmado === true ){
-            return `Su reserva: ${getId.value}`+ `esta confirmada` 
-
-        } else if ( pendiente === undefined ) {
-            return `Su reserva está pendiente`
         }
-        else {
-            return `Su reserva fue rechazada`
-        }
-    }
-    }
-// class Requerido  { [identificador,nameHotel,tipoHabitacion,inicio,fin,huespedesNum, ]};
+    };
 
-module.exports = Id ;
+module.exports = {Usuario, Hotel,Reserva, Estado } ;
   
