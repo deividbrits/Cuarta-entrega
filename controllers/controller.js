@@ -63,19 +63,27 @@ console.log(reservationsToconfirm)
 }
 
 exports.getReservaByID = async (req,res) => {
-   const reservationID = parseInt (req.params.idReserv);
-   const reserv = reservationsToconfirm.find (reserv => reserv.idReserv === reservationID);
+   console.log(reservationsToconfirm)
+   console.log(req.params)
+   const reservationID = parseInt(req.params.id);
+   console.log('reservationID', reservationID);
+   if (reservationID) {
+   const reserv = reservationsToconfirm.find (reserv => reserv.idReserv === reservationID );
 
-   console.log(reserv)
+   console.log('reserv',reserv)
 
-   if (reserv === -1 ) {
+   if (!reserv) {
       return res.status (404).json ({msj : "reserva no existe"}); 
       
    }
     return res.json({
       msj : 'reserva obtenida con éxito',
       data : reserv
-    })
+    });
+   } else {
+      return res.status(400).json ({msj : "parametro IdReserv no existe"});
+   
+   }
 
     
 }
