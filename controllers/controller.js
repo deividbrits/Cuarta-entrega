@@ -20,12 +20,13 @@ let reservations = [];
 // module.exports = RegistroUsuario;
 
 exports.addUsuario = async (req, res ) => {
-   const {name,email,phone } = req.body;
+   const {name,email,phone,role } = req.body;
    const newUsuario = new Usuario (
       users.length + 1,
       name,
       email,
       phone,
+      role,
       moment()
 
    ); 
@@ -49,9 +50,11 @@ const newReserva = new Reserva (
       huespedesNum,
       tipoHabitacion,
       estado
-);
+)  ;
 
 reservationsToconfirm.push (newReserva)
+
+console.log(newReserva)
 
 res.json({
     msj :"Confirma Datos de tu Reserva",
@@ -89,8 +92,13 @@ exports.getReservaByID = async (req,res) => {
 }
 
 exports.updateReservaByID = async (req,res) => {
-   const reservationID = parseInt (req.params.idReserv);
+   console.log(req.params)
+   console.log(reservationsToconfirm)
+   const reservationID = parseInt (req.params.id);
    const reservationIndex = reservationsToconfirm.findIndex (newReserva => newReserva.idReserv === reservationID);
+   console.log(reservationID)
+   console.log(reservationIndex)
+   
 
    if (reservationIndex === -1) {
       return res.status(404).json ({msj : "reserva no existe "});
@@ -107,7 +115,8 @@ exports.updateReservaByID = async (req,res) => {
       data : reservationsToconfirm [reservationID]
    })
 
-   
+
+
 
 }
 
