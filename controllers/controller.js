@@ -3,21 +3,9 @@ const moment = require ('moment');
 
 let users = [];
 let reservationsToconfirm = [];
-// let hotels = ["Hotel Paraiso", "Hotel de Rosas", "Hotel Cachuperto"]
-// let rooms = ["simple", "Doble", "Delux" ]
 let reservations = [];
 
-// class RegistroUsuario {
 
-//       static userController (req,res) {
-//             const usuario = new Id (req.body.identificador, req.body.nombre, req.body.email);
-//             res.send(`Usuario Registrado : ${usuario.getId()}`);
-
-      
-//       }
-
-// }
-// module.exports = RegistroUsuario;
 
 exports.addUsuario = async (req, res ) => {
    const {name,email,phone,role } = req.body;
@@ -41,7 +29,7 @@ exports.addUsuario = async (req, res ) => {
 };
 
 exports.addReserva = async (req,res) => {
-const {hotel,inicio, fin,huespedesNum,tipoHabitacion,estado} = req.body;
+const {hotel,inicio, fin,huespedesNum,tipoHabitacion,estado,pago} = req.body;
 const newReserva = new Reserva (
       reservationsToconfirm.length +1,
       hotel,
@@ -49,7 +37,8 @@ const newReserva = new Reserva (
       fin,
       huespedesNum,
       tipoHabitacion,
-      estado
+      estado,
+      pago,
 )  ;
 
 reservationsToconfirm.push (newReserva)
@@ -119,33 +108,101 @@ exports.updateReservaByID = async (req,res) => {
 
 
 }
-
-// exports.getStatus = async (req,res) => {
-//    const {confirmado, pendiente , rechazado} = req.body
-//    const newEstado = new Estado (
-//       confirmado,
-//       pendiente,
-//       rechazado
-//    );
-
-
-// if (confirmado = true) {
-//    reservations.push (newReserva);
-//    res.json ({
-//       msj: "tu reserva fue confirmada",
-//       data : newReserva      })
-// }
-// if (pendiente = true) {
-//    res.json ({
-//       msj: "Tu reserva está pendiente , confirma tu reservación para garantizar la estadía"
+// exports.getAllreservs = async (req,res) => {
+//    const {estado} = req.body 
+//    const confirmReservs = reservations.filter (reserv => reserv.estado === "confirmado");
+//  console.log(confirmReservs);
+//    if (confirmReservs.length === -1) {
+//       return res.status(404).json ({msj : "no hay reservas confirmadas"});
+//    }
+// if (estado === "confirmado") {
+//    return res.json ({
+//       msj : 'reservas obtenidas',
+//       data : reservations
 //    })
-// }
-// else {
-//    return res.status(404).json ({msj : " tu reserva fue rechazada , por favor vuelve a realizarla "})
-// }
 
+// } 
 
+exports.getAllreservs = async (req,res) => {
+   const {hotel,tipoHabitacion,inicio,fin,huespedesNum,estado,pago} = req.query; 
+   const confirmReservs = reservations.filter (reserv => reserv.estado === "confirmado");
+ console.log(confirmReservs);
+   if (confirmReservs.length === -1) {
+      return res.status(404).json ({msj : "no hay reservas confirmadas"});
+   }
+if (estado === "confirmado") {
+   return res.json ({
+      msj : 'reservas obtenidas',
+      data : reservations
+   })
+   } else if(inicio && fin) {
+      const fechaInicio = inicio;
+      const fechaFin = fin
 
+      const indiceInicio = reservations.findIndex (reserv => reserv.inicio === fechaInicio);
+      const indiceFin = reservations.findIndex (reserv => reserv.fin === fechaFin) ;
 
-// };
+      const filteredReservs = reservations.slice (indiceInicio,indiceFin);
+      console.log(filteredReservs)
+      if (filteredReservs.length === 0) {
+         return res.status(404).json ({msj : "no hay reservas confirmadas para este criterio"});
+      }
+      return res.json ({
+         msj : 'reservas obtenidas',
+         data : filteredReservs
+      });
+ } else if (hotel) {
+   const filteredReservs = reservations.filter (reserv => reserv.hotel === hotel);
+if (filteredReservs.length === 0) {
+   return res.status(404).json ({msj : "no hay reservas confirmadas para este criterio"});
+}
+return res.json ({
+   msj : 'reservas obtenidas',
+   data : filteredReservs
+});
+ } else if (tipoHabitacion) {
+   const filteredReservs = reservations.filter (reserv => reserv.tipoHabitacion === tipoHabitacion);
+   if (filteredReservs.length === 0) {
+      return res.status(404).json ({msj : "no hay reservas confirmadas para este criterio"});
+   }
+   return res.json ({
+      msj : 'reservas obtenidas',
+      data : filteredReservs
+   });
+ } else if (huespedesNum) {
+   const filteredReservs = reservations.filter (reserv => reserv.huespedesNum === huespedesNum);
+if (filteredReservs.length === 0) {
+   return res.status(404).json ({msj : "no hay reservas confirmadas para este criterio"});
+}
+return res.json ({
+   msj : 'reservas obtenidas',
+   data : filteredReservs
+})} else if(pago) {
+   const filteredReservs = reservations.filter (reserv => reserv.pago === pago);
+   if (filteredReservs.length === 0) {
+      return res.status(404).json ({msj : "no hay reservas confirmadas para este criterio"});
+   }
+   return res.json ({
+      msj : 'reservas obtenidas',
+      data : filteredReservs
+   });
+}
+}  
 
+ exports.deleteReservaByID = async (req,res) => {
+   const reservationID = parseInt (req.params.id);
+   const reservationIndex = reservations.findIndex (newReserva => newReserva.idReserv === reservationID) 
+
+   if (reservationIndex === -1) {
+      return res.status(404).json ({msj : "reserva no existe "});
+   }
+
+   reservations.splice(reservationIndex,1);
+
+   console.log(reservations)
+
+   return res.json ({
+      msj : 'reserva eliminada',
+      data : reservations
+   })
+}
