@@ -142,7 +142,10 @@ if (estado === "confirmado") {
       const indiceInicio = reservations.findIndex (reserv => reserv.inicio === fechaInicio);
       const indiceFin = reservations.findIndex (reserv => reserv.fin === fechaFin) ;
 
-      const filteredReservs = reservations.slice (indiceInicio,indiceFin);
+      const filteredReservs = reservations.filter (reservation => {
+         return reservation.inicio >= fechaInicio && reservation.fin <= fechaFin
+      });
+      console.log(indiceInicio,indiceFin);
       console.log(filteredReservs)
       if (filteredReservs.length === 0) {
          return res.status(404).json ({msj : "no hay reservas confirmadas para este criterio"});

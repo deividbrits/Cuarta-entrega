@@ -51,7 +51,7 @@ Ahora vamos a modificar el estado de la reserva a confirmado con la ruta y su ID
     "estado" : "confirmado"
 }
 
-Es importante este paso ya que existe un array solo para reservas confirmadas. 
+Es importante este paso ya que existe un array solo para reservas confirmadas(tengo un bug que no me toma la data que quiero al confirmar la reserva, pero si en la consola me aparece los datos que cambié con metodo put). 
 No obstante por la misma ruta se pueden modificar los otros datos de la reserva ,como el tipoHabitacion, huespedesNum y pago. 
 
 
